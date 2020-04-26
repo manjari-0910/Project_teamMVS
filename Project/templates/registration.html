@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        Registration
+    </title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: url(https://img1.goodfon.com/wallpaper/nbig/1/39/nastroeniya-kniga-knizhka-5644.jpg);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+        }
+        
+        #h1 {
+            background-color: rgb(235, 152, 119) ;
+            text-align: center;
+            font-size: 50px;
+            font-family: Times New Roman, cursive, serif;
+            color: rgb(77, 41, 13)
+        }
+        
+        div {
+            margin: 40px;
+        }
+        
+        .naming {
+            color: rgb(235, 152, 119);
+            line-height: 50px;
+            font-size: 20px;
+        }
+        
+        button {
+            font-size: xx-large;
+        }
+        
+        button:hover {
+            background-color: rgba(146, 92, 92, 0.89);
+        }
+    </style>
+    <link rel="stylesheet" href="design.css">
+    <meta name="viewport" content="width = device-width, initial-scale = 1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+
+<body>
+    <h1 id="h1">Register Now!</h1>
+    <div>
+        <form action="{{url_for('elegiblity')}}" method="POST">
+            <hr>
+            <h3>{{message}}</h3>
+            <label class="naming" for="name">Full Name: </label>
+            <input type="text" name="name" placeholder="full name"><br>
+            <hr>
+            <label class="naming" for="password">Enter Password: </label>
+            <input type="password" name="password" placeholder="password"><br>
+            <hr>
+            <button>Register</button>
+            <hr>
+        </form>
+
+    </div>
+
+</body>
+
+</html>

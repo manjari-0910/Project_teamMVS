@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        Registration
+    </title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: url(https://img1.goodfon.com/wallpaper/nbig/1/39/nastroeniya-kniga-knizhka-5644.jpg);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+        }
+        
+        #h1 {
+            background-color: rgb(211, 94, 94);
+            text-align: center;
+            font-size: 50px;
+            font-family: 'Times New Roman';
+            color: white;
+        }
+        
+        div {
+            margin: 40px;
+        }
+        
+        .naming {
+            color: rgb(207, 158, 158);
+            line-height: 50px;
+            font-size: 20px;
+        }
+        
+        button {
+            font-size: xx-large;
+        }
+        
+        button:hover {
+            background-color: rgb(226, 101, 101);
+        }
+    </style>
+    <link rel="stylesheet" href="design.css">
+    <meta name="viewport" content="width = device-width, initial-scale = 1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+
+<body>
+    <h1 id="h1">LOG IN!</h1>
+    <div>
+        <form action="{{url_for('login')}}" method="POST">
+            <hr>
+            <h3>{{message}}</h3>
+            <label class="naming" for="name">Full Name: </label>
+            <input type="text" name="name" placeholder="full name"><br>
+            <hr>
+            <label class="naming" for="password">Enter Password: </label>
+            <input type="password" name="password" placeholder="password"><br>
+            <hr>
+            <button>LOG IN</button>
+            <hr>
+        </form>
+
+    </div>
+
+</body>
+
+</html>
