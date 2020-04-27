@@ -1,83 +1,105 @@
-import os
 
-from flask import Flask, session, render_template, request, session
+import os
+from flask import Flask, session, redirect, render_template, request, jsonify, flash ,url_for
 from flask_session import Session
 from sqlalchemy import create_engine
+# from flask impor
+from wtforms import StringField, PasswordField, BooleanField
+from flask_wtf import FlaskForm
+from sqlalchemy import create_engine, Column, Integer, String, Sequence, DateTime
 from sqlalchemy.orm import scoped_session, sessionmaker
-from models import *
+from werkzeug.security import check_password_hash, generate_password_hash
+from datetime import datetime
+# from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from models  import User,Books
 
 
+app = Flask(__name__,template_folder="templates")
 
-app = Flask(__name__)
 # Check for environment variable
 if not os.getenv("DATABASE_URL"):
     raise RuntimeError("DATABASE_URL is not set")
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-db.init_app(app)
+# db.init_app(app)
 
 # Configure session to use filesystem
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
-# # Set up database
-# engine = create_engine(os.getenv("DATABASE_URL"))
-# db = scoped_session(sessionmaker(bind=engine))
+# Set up database
+engine = create_engine(os.getenv("DATABASE_URL")) 
+db = scoped_session(sessionmaker(bind=engine))
 
-
-
+#--------------------------------------------------------------------------------------------------------------
 @app.route("/")
 def index():
-    valid_users = User.query.all()
+    return render_template("home.html") 
 
-    return render_template("home.html", users = valid_users)
+#--------------------------------------------------------------------------------------------------------------
 
-@app.route("/registration", methods=["GET"])
-def registration():
-    return render_template("registration.html", message="please register")
-
-@app.route("/elegiblity", methods=["POST", "GET"])
-def elegiblity():
-    if request.method == 'GET':
-        return render_template("home.html")
-    name = request.form.get("name")
-    password = request.form.get("password")
-    if(User.query.get(name) == None):
-        # session[name] = []
-        details = User(username = name, password = password)
-        # session[name].append(name)
-        db.session.add(details)
-        db.session.commit()
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        name = request.form.get("name")
+        password = request.form.get("password")
+        hash_password=generate_password_hash(password,method='sha256')
+        details = User(username = name, password = hash_password)
+        db.add(details)
+        db.commit()
         return render_template("success.html", message = "Successfully Registered")
-    else:
-        return render_template("registration.html", message= "please login, you have already registered")
-
-@app.route("/sendtologin")
-def sendtologin():
-    return render_template("login.html")
-
-@app.route("/login", methods=["POST", "GET"])
+    return render_template("register.html")    
+       
+#-------------------------------------------------------------------------------------------------------------------
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'GET':
-        return render_template("home.html")
-    name = request.form.get("name")
-    password = request.form.get("password")
-    if(User.query.get(name) != None):
-        details = User.query.get(name)
-        if(password == details.password):
-            return render_template("success.html", message = name)
-        else:
-            return render_template("login.html", message = "incorrect password")
-    else:
-        return render_template("registration.html", message="you haven't registered please register first")
 
-def main():
-    db.create_all()
-    print("tables created")
-    
+    if request.method == 'POST':
+        name = request.form.get("name")
+        password = request.form.get("password")
+        hash_password= generate_password_hash(password,method='sha256')
 
-if __name__ == '__main__':
-    with app.app_context():
-        main()
+        user = db.query(User).filter_by(username=name).first()
+        if user:
+            if check_password_hash(user.password,password):
+
+                return render_template("search.html")
+
+        return render_template("error.html",message="Invalid username or password")        
+
+    return render_template("login.html")
+#-------------------------------------------------------------------------------------------------------------------
+@app.route('/search', methods=['GET','POST'])
+def search():
+
+    # Check book id was provided`
+    if not request.args.get("book"):
+        return render_template("error.html", message="you must provide a book.")
+
+    # Take input and add a wildcard
+    query = "%" + request.args.get("book") + "%"
+
+    query = query.title()
+    # rows= Book.query.filter(Books.isbn.LIKE(query) or Books.author.LIKE(query) or Books.title.LIKE(query) or Books.year.LIKE(query) ).all()
+    rows = db.execute("SELECT isbn, title, author, year FROM books WHERE \
+                        isbn LIKE :query OR \
+                        title LIKE :query OR \
+                        author LIKE :query LIMIT 15", 
+                        {"query": query})
     
+    # Books not founded
+    if rows.rowcount == 0:
+        return render_template("error.html", message="we can't find books with that description.")
+    
+    # Fetch all the results
+    books = rows.fetchall()
+
+    return render_template("list of books.html", books=books)
+#------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+

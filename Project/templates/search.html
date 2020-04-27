@@ -3,7 +3,7 @@
 
 <head>
     <title>
-        SUCCESS
+        SEARCH
     </title> 
     <style>
         body {
@@ -102,14 +102,26 @@
 <body>
     <nav id="menubar">
         <ul id="menu">
-            <li><a href="#">HOME</a></li>
+            <li><a href="{{url_for('register')}}">HOME</a></li>
             <li><a href="{{url_for('register')}}">REGISTER</a></li>
             <LI><a href="{{url_for('login')}}">LOG IN</a></LI>
         </ul>
     </nav>
+    <h1>Welcome to the website...{{message}}</h1>
+    
     <div class="srch">
-        <h1>Welcome to the website...{{message}}</h1>
+        <h1>Search for a book!</h1>   
     </div>
+          
+        <br>
+        <form action="/search" method="GET">
+          <div class="form-group">
+              <input type="text"  name="book" autofocus aria-describedby="bookHelp" placeholder="ISBN, Title or Author" size="50;">
+              
+          </div>
+          <button class="btn btn-primary" type="submit">Search</button>
+        </form>   
+      </div>
     
 
 </body>
