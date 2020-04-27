@@ -3,51 +3,81 @@
 
 <head>
     <title>
-        Registration
-    </title>
+        LOGIN
+    </title> 
     <style>
         body {
             margin: 0;
             padding: 0;
-            background: url(https://img1.goodfon.com/wallpaper/nbig/1/39/nastroeniya-kniga-knizhka-5644.jpg);
+            background: url(https://img.etimg.com/thumb/msid-67619899,width-640,resizemode-4,imgsize-134956/coincidence-or-what.jpg);
             background-size: cover;
-            background-position: center;
             background-repeat: no-repeat;
             height: 100vh;
+            width: 100%;
         }
         
-        #h1 {
-            background-color: rgb(211, 94, 94);
+        #menubar {
+            width: 100%;
+            background-color: wheat;
+            height: 60px;
+        }
+        
+        #menu {
+            color: rgb(185, 78, 78);
+            list-style-type: none;
+            line-height: 40px;
+        }
+        
+        #menu li {
+            display: inline-block;
+        }
+        
+        #menu li a {
+            padding: 10px;
+            text-decoration: none;
+            color: rgb(207, 65, 65);
+            display: block;
+            font-weight: 800;
+        }
+        
+        #menu li a:hover {
+            background-color: rgb(71, 13, 13);
+        }
+        
+        h1 {
+            color: rgb(48, 24, 20);
+            text-align: left;
+            text-transform: capitalize;
+            font-weight: 1000;
+        }
+        
+        p {
+            color: rgb(177, 61, 61);
             text-align: center;
-            font-size: 50px;
-            font-family: 'Times New Roman';
+            font-weight: 800;
+        }
+        
+        .names {
+            list-style-type: none;
             color: white;
+            font-weight: 800;
         }
         
-        div {
-            margin: 40px;
-        }
-        
-        .naming {
-            color: rgb(207, 158, 158);
-            line-height: 50px;
-            font-size: 20px;
-        }
-        
-        button {
-            font-size: xx-large;
-        }
-        
-        button:hover {
-            background-color: rgb(226, 101, 101);
+        h3 {
+            color: rgb(235, 225, 225);
         }
     </style>
-    <link rel="stylesheet" href="design.css">
-    <meta name="viewport" content="width = device-width, initial-scale = 1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
 </head>
 
 <body>
+    <nav id="menubar">
+        <ul id="menu">
+            <li><a href="#">HOME</a></li>
+            <li><a href="{{url_for('register')}}">REGISTER</a></li>
+            <LI><a href="{{url_for('login')}}">LOG IN</a></LI>
+        </ul>
+    </nav>
     <h1 id="h1">LOG IN!</h1>
     <div>
         <form action="{{url_for('login')}}" method="POST">
